@@ -103,6 +103,7 @@ public class PersistedPersonControllerTest {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetByName() {
 		List<PersistedPerson> persons = restTemplate.getForObject(URL+"?name=posted", List.class);
@@ -114,6 +115,10 @@ public class PersistedPersonControllerTest {
 		persons = restTemplate.getForObject(URL+"?name=posted", List.class);
 		Assert.assertNotNull(persons);
 		Assert.assertEquals(persons.size(), 1);
+		
+		persons = restTemplate.getForObject(URL+"?name=not_posted", List.class);
+		Assert.assertNotNull(persons);
+		Assert.assertEquals(persons.size(), 0);
 	}
 	
 }
