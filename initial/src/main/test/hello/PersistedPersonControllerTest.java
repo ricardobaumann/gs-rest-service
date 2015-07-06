@@ -1,6 +1,3 @@
-/**
- * 
- */
 package hello;
 
 import java.util.List;
@@ -15,14 +12,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * @author ricardo
- *
- */
-public class PersonControllerTest {
+public class PersistedPersonControllerTest {
 
-	
-	private static final String URL = "http://localhost:8080/person";
+
+	private static final String URL = "http://localhost:8080/persisted";
 	private RestTemplate restTemplate = new RestTemplate();
 	private ConfigurableApplicationContext r;
 	/**
@@ -44,7 +37,6 @@ public class PersonControllerTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		PersonController.PERSONS.clear();
 		r = SpringApplication.run(Application.class);
 	}
 
@@ -57,12 +49,12 @@ public class PersonControllerTest {
 	}
 
 	/**
-	 * Test method for {@link hello.PersonController#get()}.
+	 * Test method for {@link hello.PersistedPersonController#get()}.
 	 */
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetEmpty() {
-		List<Person> persons = restTemplate.getForObject(URL, List.class);
+		List<PersistedPerson> persons = restTemplate.getForObject(URL, List.class);
 		Assert.assertNotNull(persons);
 		Assert.assertEquals(persons.size(), 0);
 	}
@@ -70,20 +62,20 @@ public class PersonControllerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testGetSomething() {
-		PersonController.PERSONS.put(1L, new Person("nome"));
+		testPost();
 		
-		List<Person> persons = restTemplate.getForObject(URL, List.class);
+		List<PersistedPerson> persons = restTemplate.getForObject(URL, List.class);
 		Assert.assertNotNull(persons);
 		Assert.assertEquals(persons.size(), 1);
 	}
 
 	/**
-	 * Test method for {@link hello.PersonController#get(java.lang.Long)}.
+	 * Test method for {@link hello.PersistedPersonController#get(java.lang.Long)}.
 	 */
 	@Test
 	public void testGetIDEmpty() {
 		
-		Person person = restTemplate.getForObject(URL+"/1", Person.class);
+		PersistedPerson person = restTemplate.getForObject(URL+"/1", PersistedPerson.class);
 		Assert.assertNull(person);
 		
 	}
@@ -91,25 +83,25 @@ public class PersonControllerTest {
 	@Test
 	public void testGetIDSomething() {
 		
-		PersonController.PERSONS.put(1L, new Person("nome"));
+		testPost();
 		
-		Person person = restTemplate.getForObject(URL+"/1", Person.class);
+		PersistedPerson person = restTemplate.getForObject(URL+"/1", PersistedPerson.class);
 		Assert.assertNotNull(person);
-		Assert.assertEquals(person.getName(), "nome");
+		Assert.assertEquals(person.getName(), "posted");
 		
 	}
 
 	/**
-	 * Test method for {@link hello.PersonController#post(hello.Person)}.
+	 * Test method for {@link hello.PersistedPersonController#post(hello.PersistedPerson)}.
 	 */
 	@Test
 	public void testPost() {
-		Person person = new Person("posted");
-		Person createdPerson = restTemplate.postForObject(URL, person, Person.class);
-		Assert.assertNotNull(createdPerson);  
-		Assert.assertEquals(person.getName(), createdPerson.getName());
+		PersistedPerson person = new PersistedPerson("posted");
+		PersistedPerson createdPersistedPerson = restTemplate.postForObject(URL, person, PersistedPerson.class);
+		Assert.assertNotNull(createdPersistedPerson);  
+		Assert.assertEquals(person.getName(), createdPersistedPerson.getName());
 	}
 
-	
 
+	
 }
