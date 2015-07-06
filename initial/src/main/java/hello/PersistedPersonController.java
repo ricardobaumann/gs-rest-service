@@ -26,7 +26,11 @@ public class PersistedPersonController {
 	
 	@RequestMapping(method=RequestMethod.GET,value="{id}")
 	public PersistedPerson get(@PathVariable("id") Long id) {
-		return persistedPersonRepository.findOne(id);
+		PersistedPerson persistedPerson = persistedPersonRepository.findOne(id);
+		if (persistedPerson==null) {
+			throw new NotFoundException();
+		}
+		return persistedPerson;
 	}
 	
 	@RequestMapping(method=RequestMethod.POST)
@@ -36,12 +40,18 @@ public class PersistedPersonController {
 	
 	@RequestMapping(method=RequestMethod.PUT,value="{id}")
 	public PersistedPerson put(@RequestBody PersistedPerson person, @PathVariable("id") Long id) {
+		if (!persistedPersonRepository.exists(id)) {
+			throw new NotFoundException();
+		}
 		person.setId(id);
 		return persistedPersonRepository.save(person);
 	}
 	
 	@RequestMapping(method=RequestMethod.DELETE,value="{id}")
 	public void delete(@PathVariable("id") Long id) {
+		if (!persistedPersonRepository.exists(id)) {
+			throw new NotFoundException();
+		}
 		persistedPersonRepository.delete(id);  
 	}
 	

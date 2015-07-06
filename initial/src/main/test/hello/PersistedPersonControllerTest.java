@@ -10,6 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 public class PersistedPersonControllerTest {
@@ -72,7 +73,7 @@ public class PersistedPersonControllerTest {
 	/**
 	 * Test method for {@link hello.PersistedPersonController#get(java.lang.Long)}.
 	 */
-	@Test
+	@Test(expected=HttpClientErrorException.class)
 	public void testGetIDEmpty() {
 		
 		PersistedPerson person = restTemplate.getForObject(URL+"/1", PersistedPerson.class);
