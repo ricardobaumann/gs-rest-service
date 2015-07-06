@@ -103,5 +103,17 @@ public class PersistedPersonControllerTest {
 	}
 
 
+	@Test
+	public void testGetByName() {
+		List<PersistedPerson> persons = restTemplate.getForObject(URL+"?name=posted", List.class);
+		Assert.assertNotNull(persons);
+		Assert.assertEquals(persons.size(), 0);
+		
+		testPost();
+		
+		persons = restTemplate.getForObject(URL+"?name=posted", List.class);
+		Assert.assertNotNull(persons);
+		Assert.assertEquals(persons.size(), 1);
+	}
 	
 }
