@@ -16,7 +16,7 @@ public class GreetingController {
 
     private static final String template = "Hello, %s!";
     private final AtomicLong counter = new AtomicLong();
-    private static Map<Long, Greeting> map = new HashMap<Long, Greeting>();
+    protected static Map<Long, Greeting> map = new HashMap<Long, Greeting>();
     
 
     @RequestMapping("/greeting")
